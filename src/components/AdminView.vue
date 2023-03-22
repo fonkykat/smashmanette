@@ -22,7 +22,7 @@
 <script>
 import ManetteView from "@/components/ManetteView";
 import {deleteAllButtonPress, resetButton} from "@/services/buttonService";
-import {getChap, setChap} from "@/services/chapterService";
+import {getChap, setChap} from "@/services/currentService";
 export default {
   name: "AdminView",
   components: {ManetteView},

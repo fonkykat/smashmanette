@@ -1,8 +1,8 @@
 <template>
-  <div class="fullscreen" id="no_concert" v-if="chapter===0 && send">
+  <div class="fullscreen" id="no_concert" v-if="current===0 && send">
     <h1>Il n'y a pas de concert en cours désolé, revenez plus tard !!</h1>
   </div>
-  <div class="fullscreen" id="simple_manette" v-else-if="chapter===1 || !send">
+  <div class="fullscreen" id="simple_manette" v-else-if="current===1 || !send">
     <div class="quarter a" id="a" @click="incrButton('a')">
       <p class="button_label">A</p>
     </div>
@@ -16,7 +16,7 @@
       <p class="button_label">Y</p>
     </div>
   </div>
-  <div class="fullscreen" id="complex_manette" v-else-if="chapter===2">
+  <div class="fullscreen" id="complex_manette" v-else-if="current===2">
     <div class="quarter a" id="ax" @click="postButtonPress('a')">
       <p class="button_label">A</p>
     </div>
@@ -39,7 +39,7 @@
 
 <script>
 import {incrButton, postButtonPress} from "@/services/buttonService";
-import {getChap} from "@/services/chapterService";
+import {getChap} from "@/services/currentService";
 import sonex from "@/assets/sonex.png"
 import telz from "@/assets/telz.png"
 
@@ -48,7 +48,7 @@ export default {
   data() {
     return {
       pass:"",
-      chapter:1,
+      current:1,
       sonex: sonex,
       telz: telz,
       go:false,
@@ -73,14 +73,14 @@ export default {
     },
     checkChapter(){
       getChap().then(resp => {
-        if(resp.data.number === 3 && this.chapter !== 3) {
+        if(resp.data.number === 3 && this.current !== 3) {
           this.go = false
           this.winner = false
           this.loser = false
-          setTimeout(() => this.chapter = 3, 5000)
+          setTimeout(() => this.current = 3, 5000)
         }
         else
-          this.chapter = resp.data.number
+          this.current = resp.data.number
       }).finally(() => {
         setTimeout(this.checkChapter,1000)
       })
