@@ -30,6 +30,9 @@
       <p class="button_label">Y</p>
     </div>
   </div>
+  <div class="fullscreen" v-else-if="current==3">
+    <shake-view></shake-view>
+  </div>
   <div class="fullscreen" id="sonex" v-else-if="chapter===3" @click="goFast()">
     <h1 v-if="!go"> GO !!</h1>
     <img :src="sonex" v-if="go && winner"/>
@@ -42,9 +45,11 @@ import {incrButton, postButtonPress} from "@/services/buttonService";
 import {getChap} from "@/services/currentService";
 import sonex from "@/assets/sonex.png"
 import telz from "@/assets/telz.png"
+import ShakeView from "@/components/ShakeView.vue";
 
 export default {
   name: "ManetteView",
+  components: {ShakeView},
   data() {
     return {
       pass:"",
