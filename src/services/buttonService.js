@@ -1,7 +1,7 @@
-import {BASE_URL} from "@/services/contants";
+import {API_BASE_URL} from "@/services/contants";
 import axios from "axios";
 
-export const BASE_BUTTON_URL = BASE_URL + '/buttons'
+export const BASE_BUTTON_URL = API_BASE_URL + '/buttons'
 export const incrButton = function(name){
     return axios.put(BASE_BUTTON_URL + '/' + name + '/incr')
 }

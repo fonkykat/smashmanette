@@ -1,11 +1,17 @@
-<template>
+  <template>
   <router-view/>
 </template>
 
 <script>
 
+import {sayHello} from "@/services/concertService";
+
 export default {
   name: 'App',
+  mounted()
+  {
+    sayHello()
+  }
 }
 </script>
 
