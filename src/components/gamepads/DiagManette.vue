@@ -24,6 +24,7 @@ export default {
   data() {
     return {
       pass: "",
+      vw: 0,
       brand: "Xbox",
       xboxLayoutPC: '". y ."\n' +
           '      "x y b"\n' +
@@ -42,8 +43,11 @@ export default {
     }
   },
   computed:{
+    widthCheck(){
+      return this.vw < 700;
+    },
     padLayout() {
-      if(this.mobileCheck())
+      if(this.widthCheck)
       {
         if(this.brand === 'Xbox')
           return this.xboxLayoutMobile
@@ -87,6 +91,12 @@ export default {
         }
       }
     }
+  },
+  mounted() {
+    this.vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+    addEventListener("resize", () => {
+      this.vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+    })
   }
 }
 </script>
