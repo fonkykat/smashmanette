@@ -5,13 +5,13 @@
       Chapter {{chapter_number}}
     </div>
     <div class="quarter" id="a" @click="previousChapter">
-      <p class="button_label">Previous</p>
+      <p class="button_label"><font-awesome-icon icon="fa-solid fa-caret-left"/></p>
     </div>
     <div class="quarter" id="b" @click="nextChapter">
-      <p class="button_label">Next</p>
+      <p class="button_label"><font-awesome-icon icon="fa-solid fa-caret-right"/></p>
     </div>
     <div class="quarter" id="x" @click="resetCounts">
-      <p class="button_label">Reset</p>
+      <p class="button_label"><font-awesome-icon icon="fa-solid fa-trash"/></p>
     </div>
     <div class="quarter" id="y">
       <p class="button_label">?</p>
@@ -23,9 +23,10 @@
 import ManetteView from "@/components/ManetteView";
 import {deleteAllButtonPress, resetButton} from "@/services/buttonService";
 import {getChap, setChap} from "@/services/currentService";
+import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 export default {
   name: "AdminView",
-  components: {ManetteView},
+  components: {FontAwesomeIcon, ManetteView},
   data() {
     return {
       locked: true,
