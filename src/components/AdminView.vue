@@ -1,5 +1,5 @@
 <template>
-  <manette-view @pass="checkPass" v-if="locked" :send="false"></manette-view>
+  <diag-manette @pass="checkPass" v-if="locked" :send="false"></diag-manette>
   <div class="fullscreen" v-else>
     <div class="title">
       Chapter {{chapter_number}}
@@ -20,13 +20,13 @@
 </template>
 
 <script>
-import ManetteView from "@/components/ManetteView";
 import {deleteAllButtonPress, resetButton} from "@/services/buttonService";
 import {getChap, setChap} from "@/services/currentService";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
+import DiagManette from "@/components/gamepads/DiagManette.vue";
 export default {
   name: "AdminView",
-  components: {FontAwesomeIcon, ManetteView},
+  components: {DiagManette, FontAwesomeIcon},
   data() {
     return {
       locked: true,
