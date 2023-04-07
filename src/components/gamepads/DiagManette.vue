@@ -1,6 +1,6 @@
 <template>
-  <div class="fullscreen" :style="'grid-template-areas:'+padLayout">
-    <div id="pad_brand" @click="changeBrand">{{brand}}</div>
+  <div class="fullscreen" :style="myStyle">
+    <!--div id="pad_brand" @click="changeBrand">{{brand}}</div-->
     <div class="quarter a" id="a" @click="incrButton('a')">
       <p class="button_label">A</p>
     </div>
@@ -18,6 +18,7 @@
 
 <script>
 import {incrButton} from "@/services/buttonService";
+import {SNES} from "@/services/palettes";
 
 export default {
   name: "DiagManette",
@@ -25,6 +26,11 @@ export default {
     return {
       pass: "",
       vw: 0,
+      shakeCounter: 0,
+      phoneShook: false,
+      myStyle:{
+        backgroundColor: SNES.lightGrey,
+      },
       brand: "Xbox",
       xboxLayoutPC: '". y ."\n' +
           '      "x y b"\n' +
@@ -97,6 +103,38 @@ export default {
     addEventListener("resize", () => {
       this.vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
     })
+
+    this.myStyle.gridTemplateAreas = this.padLayout
+    // Add a devicemotion event listener to the window object
+    window.addEventListener('devicemotion', handleMotion);
+
+    const component = this
+    function handleMotion(event) {
+      // Extract acceleration data from the event
+      const { x, y, z } = event.accelerationIncludingGravity;
+
+      // Calculate the total acceleration (excluding gravity)
+      const acceleration = Math.sqrt(x ** 2 + y ** 2 + z ** 2) - 9.81;
+
+      // Check if the acceleration exceeds a certain threshold
+      if (acceleration > 30) {
+        // Phone is shaking
+        component.shakeCounter++
+        if(component.shakeCounter >= 5)
+        {
+          incrButton('shake')
+          component.shakeCounter = 0
+          component.phoneShook = true
+          component.myStyle.backgroundColor = SNES.lightPurple
+          console.log('Phone shaking detected!');
+
+          setTimeout(() => {
+            component.phoneShook = false
+            component.myStyle.backgroundColor = SNES.lightGrey
+          }, 500)
+        }
+      }
+    }
   }
 }
 </script>
