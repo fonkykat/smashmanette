@@ -25,11 +25,7 @@ export default {
       const press = {}
       press['timestamp'] = Date.now()
       // press.date = new Date()
-      postButtonPress(name, press).then(resp => {
-        const time = new Date(resp.data.timestamp)
-        const time_string = time.getHours()+':'+time.getMinutes()+':'+time.getSeconds()+','+time?.getMilliseconds();
-        alert('Bouton "'+resp.data.name.toUpperCase()+'" appuyé à '+time_string+' par votre IP : '+resp.data.ip)
-      })
+      postButtonPress(name, press)
     },
   }
 }
