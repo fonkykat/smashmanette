@@ -1,38 +1,50 @@
 <template>
-  <manette-view @pass="checkPass" v-if="locked" :send="false"></manette-view>
+  <diag-manette @pass="checkPass" v-if="locked" :send="false"></diag-manette>
   <div class="fullscreen" v-else>
     <div class="title">
       Chapter {{chapter_number}}
     </div>
+    <div class="admin_text">
+      <p>{{text}}</p>
+    </div>
     <div class="quarter" id="a" @click="previousChapter">
-      <p class="button_label">Previous</p>
+      <p class="button_label"><font-awesome-icon icon="fa-solid fa-caret-left"/></p>
     </div>
     <div class="quarter" id="b" @click="nextChapter">
-      <p class="button_label">Next</p>
+      <p class="button_label"><font-awesome-icon icon="fa-solid fa-caret-right"/></p>
     </div>
     <div class="quarter" id="x" @click="resetCounts">
-      <p class="button_label">Reset</p>
+      <p class="button_label"><font-awesome-icon icon="fa-solid fa-trash"/></p>
     </div>
-    <div class="quarter" id="y">
-      <p class="button_label">?</p>
+    <div class="quarter" id="y" @click="setNextTrue">
+      <p class="button_label"><font-awesome-icon icon="fa-solid fa-horse"/></p>
     </div>
   </div>
 </template>
 
 <script>
-import ManetteView from "@/components/ManetteView";
 import {deleteAllButtonPress, resetButton} from "@/services/buttonService";
-import {getChap, setChap} from "@/services/currentService";
+import {getChap, setChap, setNextTrue} from "@/services/currentService";
+import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
+import DiagManette from "@/components/gamepads/DiagManette.vue";
+import {getText} from "@/services/textService";
 export default {
   name: "AdminView",
-  components: {ManetteView},
+  components: {DiagManette, FontAwesomeIcon},
   data() {
     return {
       locked: true,
       chapter_number: 0,
+      text: '',
     }
   },
   methods:{
+    getText(){
+      getText().then(resp => {
+        this.text = resp.data.text
+      })
+      setTimeout(this.getText, 1000)
+    },
     nextChapter(){
       setChap(this.chapter_number + 1).then(resp => {
         this.chapter_number = resp.data.number
@@ -47,6 +59,9 @@ export default {
       resetButton()
       deleteAllButtonPress()
     },
+    setNextTrue(){
+      setNextTrue();
+    },
     checkPass(pass){
       if(pass === 'aayyxxbb')
         this.locked = false
@@ -54,10 +69,9 @@ export default {
   },
   mounted() {
     getChap().then(resp => {
-    console.log(resp.data)
-    console.log(resp.data.number)
       this.chapter_number = resp.data.number
     })
+    this.getText()
   }
 }
 </script>
@@ -83,12 +97,26 @@ export default {
   padding: 2vh;
 }
 
+.admin_text{
+  position: absolute;
+  top: 10%;
+  left: 25%;
+  width: 50%;
+  font-size: 5vh;
+  padding-left: 2vw;
+  padding-right: 2vw;
+}
+
+.admin_text p{
+  width: 90%;
+}
+
 .quarter{
   position: absolute;
   text-align: center;
-  width: 50%;
+  width: 25%;
   height: 50%;
-  font-size: 10vh;
+  font-size: 7vh;
   margin: 0;
   vertical-align: middle;
   border: 2px #2c3e50 solid;
@@ -96,11 +124,8 @@ export default {
 
 .button_label{
   position:relative;
-  top:35%;
-  margin-top: 0;
-  margin-bottom: 0;
-  margin-left: 45%;
-  margin-right: 45%;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 #a:active, #b:active, #x:active, #y:active{

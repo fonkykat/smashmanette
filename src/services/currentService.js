@@ -8,3 +8,7 @@ export const getChap = function(){
 export const setChap = function(number){
     return axios.put(BASE_BUTTON_URL+'/'+number)
 }
+
+export const setNextTrue = function(){
+    return axios.put(BASE_BUTTON_URL+'/next/true')
+}
