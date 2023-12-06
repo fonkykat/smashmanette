@@ -6,6 +6,14 @@ export const incrButton = function(name){
     return axios.put(BASE_BUTTON_URL + '/' + name + '/incr')
 }
 
+export const unlockAdmin = function(pass){
+    return axios.get(BASE_BUTTON_URL + '/unlock/admin/'+pass)
+}
+
+export const unlockLGMX= function(pass){
+    return axios.get(BASE_BUTTON_URL + '/unlock/lgmx/'+pass)
+}
+
 export const resetButton = function(){
     return axios.delete(BASE_BUTTON_URL)
 }

@@ -1,5 +1,6 @@
 <template>
   <div class="fullscreen" :style="myStyle">
+    <div id="dev_quarter" :style="'color:'+pingColor">{{ping}} ms</div>
     <!--div id="pad_brand" @click="changeBrand">{{brand}}</div-->
     <div class="quarter a" id="a" @click="incrButton('a')">
       <p class="button_label">A</p>
@@ -28,6 +29,7 @@ export default {
       vw: 0,
       shakeCounter: 0,
       phoneShook: false,
+      ping: 0,
       myStyle:{
         backgroundColor: SNES.lightGrey,
       },
@@ -51,6 +53,9 @@ export default {
   computed:{
     widthCheck(){
       return this.vw < 700;
+    },
+    pingColor() {
+      return this.ping > 100 ? 'red': 'green';
     },
     padLayout() {
       if(this.widthCheck)
@@ -84,12 +89,19 @@ export default {
         this.brand = "Xbox"
       }
     },
-    incrButton(name){
-      if(this.send)
-        incrButton(name)
+    incrButton(name) {
+      if (this.send) {
+        let start = new Date().getTime()
+        incrButton(name).then(() => {
+          this.ping = new Date().getTime() - start
+        })
+      }
       else{
         this.pass += name
-        console.log(this.pass)
+        if(this.pass.length === 6)
+        {
+          this.$emit('pass',this.pass)
+        }
         if(this.pass.length === 8)
         {
           this.$emit('pass',this.pass)
@@ -157,6 +169,19 @@ export default {
   margin: 4px;
   vertical-align: middle;
   border-radius: 5vh 10vw;
+}
+
+#dev_quarter{
+  z-index: 100;
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: white;
+  color: black;
+  padding-top: 1%;
+  padding-left: 1%;
+  padding-right: 1%;
+  user-select: none;
 }
 
 #pad_brand{

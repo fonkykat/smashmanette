@@ -1,4 +1,4 @@
-  <template>
+<template>
   <router-view/>
 </template>
 
@@ -16,12 +16,18 @@ export default {
 </script>
 
 <style>
+@font-face {
+  font-family: "SilkScreen";
+  src: local("SilkScreen"),
+  url("@/fonts/slkscr.ttf") format("truetype");
+}
+
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: "SilkScreen", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 1vh;
 }
 </style>
