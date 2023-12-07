@@ -4,21 +4,65 @@
     <n-gi :span="12">
       <n-menu v-model:value="activeKey" mode="horizontal" :options="menuOptions" />
     </n-gi>
-    <n-gi :span="10">
-      <n-button>naive</n-button>
+    <n-gi :span="12">
+      <h1>INITITALISATION CONCERT</h1>
+      <n-grid class="forms" v-if="current = 1" :cols="6">
+        <n-gi :span="2">
+          <n-space class="steps" vertical>
+            <n-steps vertical :current="current" :status="currentStatus">
+              <n-step
+                  title="Nom du concert"
+              />
+              <n-step
+                  title="Choix des premiers morceaux"
+              />
+              <n-step
+                  title="Come Together"
+              />
+              <n-step
+                  title="Something"
+              />
+              <n-step
+                  title="Anything"
+              />
+            </n-steps>
+          </n-space>
+        </n-gi>
+        <n-gi :span="2">
+          <n-form
+              ref="formRef"
+              :label-width="80"
+              :model="songEdit"
+              :size="size"
+          >
+            <n-form-item label="Nom du Public" path="concert.name">
+              <n-input v-model:value="concert.name" placeholder="Nom du Public" />
+            </n-form-item>
+            <n-form-item label="Lieu du concert" path="concert.location">
+              <n-input v-model:value="concert.location" type="number" placeholder="Lieu du Concert" />
+            </n-form-item>
+          </n-form>
+        </n-gi>
+        <n-gi :span="2"></n-gi>
+        <n-gi :span="2"></n-gi>
+        <n-gi><n-button v-if="current > 1" @click="current--">Retour</n-button></n-gi>
+        <n-gi><n-button @click="current++">Continuer</n-button></n-gi>
+        <n-gi :span="2"></n-gi>
+        <n-button>Suivant</n-button>
+      </n-grid>
     </n-gi>
-<!--    <div class="title">-->
-<!--      <p v-if="concert.name == null">Nouveau Concert, Renseignez les infos suivantes :</p>-->
-<!--      <p v-else> Nom morceau, Nom et numéro scene </p>-->
-<!--      <p class="param_button"><font-awesome-icon icon="fa-solid fa-gears"/></p>-->
-<!--    </div>-->
-<!--    <div class="admin_text">-->
-<!--      <div v-if="concert.name == null">-->
-<!--        <label for="concert_location">Nom du Public</label><input v-model="concert.location" id="concert_location" type="text"/><br/>-->
-<!--        <label for="concert_name">Référence du concert</label><input v-model="concert.name" id="concert_name" type="text"/>-->
-<!--      </div>-->
-<!--      <p v-else>{{text}}</p>-->
-<!--    </div>-->
+    <!--    <div class="title">-->
+    <!--      <p v-if="concert.name == null">Nouveau Concert, Renseignez les infos suivantes :</p>-->
+    <!--      <p v-else> Nom morceau, Nom et numéro scene </p>-->
+    <!--      <p class="param_button"><font-awesome-icon icon="fa-solid fa-gears"/></p>-->
+    <!--    </div>-->
+    <!--    <div class="admin_text">-->
+    <!--      <div v-if="concert.name == null">-->
+    <!--        <label for="concert_location">Nom du Public</label><input v-model="concert.location" id="concert_location" type="text"/><br/>-->
+    <!--        <label for="concert_name">Référence du concert</label><input v-model="concert.name" id="concert_name" type="text"/>-->
+    <!--      </div>-->
+    <!--      <p v-else>{{text}}</p>-->
+    <!--    </div>-->
   </n-grid>
 </template>
 
@@ -29,25 +73,27 @@ import {getChap, setChap, setNextTrue} from "@/services/currentService";
 import DiagManette from "@/components/gamepads/DiagManette.vue";
 import {getText} from "@/services/textService";
 import {getTodays} from "@/services/concertService";
-import {NIcon, NMenu, NButton, NGrid, NGi} from "naive-ui";
+import {NIcon, NMenu, NButton, NGrid, NGi, NSpace, NStep, NSteps, NForm, NFormItem, NInput} from "naive-ui";
 import { BookmarkOutline, CaretDownOutline } from '@vicons/ionicons5'
 import {Home as HomeIcon,
-        Book as BookIcon} from "@vicons/ionicons5";
+  Book as BookIcon} from "@vicons/ionicons5";
 import {Cogs as CogIcon} from "@vicons/fa";
 
 import { h } from 'vue'
 
 export default {
   name: "AdminView",
-  components: {DiagManette, NMenu, NButton, NGrid, NGi},
+  components: {DiagManette, NMenu, NButton, NGrid, NGi, NSpace, NStep, NSteps,NForm, NFormItem, NInput},
   data() {
     return {
-      locked: true,
+      locked: false,
       chapter_number: 0,
       text: '',
       confirm: true,
       concert: {},
       activeKey : 0,
+      current: 1,
+      currentStatus: 'process',
       menuOptions: [
         {
           key: 'home',
@@ -157,27 +203,13 @@ export default {
   padding: 0;
 }
 
-.title{
-  position: absolute;
-  top: 0;
-  left: 0;
-  text-align: center;
-  background-color: black;
-  color: white;
-  font-size: 3vh;
-  z-index: 100;
-  width: 100%;
-  padding: 1vh;
+.steps{
+  margin-left: 2vw;
+  margin-right: 2vw;
 }
 
-.admin_text{
-  position: absolute;
-  top: 10%;
-  left: 25%;
-  width: 50%;
-  font-size: 5vh;
-  padding-left: 2vw;
-  padding-right: 2vw;
+.forms{
+  margin-top: 10vh;
 }
 
 .admin_text p{
